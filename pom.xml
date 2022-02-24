@@ -13,6 +13,7 @@
     <version>0.0.1-SNAPSHOT</version>
     <name>BamcoReport</name>
     <description>BamcoReport</description>
+    <packaging>jar</packaging>
     <properties>
         <java.version>11</java.version>
     </properties>
@@ -129,6 +130,7 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
+                <version>${project.parent.version}</version>
             </plugin>
         </plugins>
         <finalName>bamcoreport</finalName>
