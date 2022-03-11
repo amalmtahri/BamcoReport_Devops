@@ -1,18 +1,46 @@
-version: '3.1'
+version: "3.8"
 services:
-  app:
-    container_name: bamcoreport
-    image: bamcoreport
-    build: ./
-    ports:
-      - "8080:8080"
-    depends_on:
-      - postgresqldb
-  postgresqldb:
+  ### Postgres Database ###
+  postgres:
+    container_name: postgres_db
     image: postgres
+    volumes:
+      - pgdata:/var/lib/postgresql/data
     ports:
       - "5432:5432"
     environment:
-      - POSTGRES_PASSWORD=amal
-      - POSTGRES_USER=postgres
-      - POSTGRES_DB=bamDb
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: amal
+      POSTGRES_DB: bamDb
+    #networks:
+    #  - mynet
+  ### API Spring Boot ###
+  api:
+    container_name: bamcorepport_dockerimage
+    #image: bamcorepport_dockerimage
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    expose:
+      - "8080"
+    restart: on-failure
+    depends_on:
+      - postgres
+    #links:
+    #  - "postgres:postgres_db"
+    environment:
+      HOST_NAME: postgres
+      PORT_NUM: 5432
+      DATABASE_NAME: bamDb
+      PS_USERNAME: postgres
+      PS_PW: amal
+    #networks:
+    #  - mynet
+
+volumes:
+  pgdata: {}
+#networks:
+#    mynet:
+#      driver: bridge
+
+#DATABASE_URL: postgresql://postgres:5432/db
